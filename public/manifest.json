@@ -1,0 +1,17 @@
+{
+  "name": "CivilBook 수준야장 Pro",
+  "short_name": "CivilBook",
+  "description": "토목·건축 현장 맞춤형 모바일 수준측량야장 (CivilBook Level Field Book Pro)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F4F6FA",
+  "theme_color": "#3182F6",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

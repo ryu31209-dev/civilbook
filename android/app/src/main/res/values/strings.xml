@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CivilBook</string>
+    <string name="title_activity_main">CivilBook</string>
+    <string name="package_name">com.civilbook.app</string>
+    <string name="custom_url_scheme">com.civilbook.app</string>
+</resources>

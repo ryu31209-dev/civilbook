@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  body {
+    overscroll-behavior-y: none;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Custom scrollbar for modern subtle appearance */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 149, 161, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 149, 161, 0.45);
+}
+
+/* Safe area padding utilities */
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+}
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 16px);
+}
+
+/* Pulse highlight animation for focused cell */
+@keyframes cell-focus-pulse-light {
+  0%, 100% {
+    box-shadow: 0 0 0 2px #0064FF, 0 0 8px rgba(0, 100, 255, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 0 2.5px #0052D9, 0 0 12px rgba(0, 100, 255, 0.4);
+  }
+}
+
+@keyframes cell-focus-pulse-dark {
+  0%, 100% {
+    box-shadow: 0 0 0 2px #38BDF8, 0 0 10px rgba(56, 189, 248, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 2.5px #0EA5E9, 0 0 14px rgba(56, 189, 248, 0.55);
+  }
+}
+
+.cell-focused {
+  position: relative;
+  z-index: 10;
+  border-radius: 8px !important;
+  animation: cell-focus-pulse-light 1.8s infinite ease-in-out;
+  background-color: #EBF3FF !important;
+  color: #0064FF !important;
+  font-weight: 900 !important;
+}
+
+.high-contrast .cell-focused,
+.dark .cell-focused {
+  animation: cell-focus-pulse-dark 1.8s infinite ease-in-out;
+  background-color: #1E293B !important;
+  color: #FFFFFF !important;
+  font-weight: 900 !important;
+  border: 1px solid #38BDF8 !important;
+}
