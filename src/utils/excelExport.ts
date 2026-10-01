@@ -1,4 +1,7 @@
 import ExcelJS from 'exceljs';
+import { Capacitor } from '@capacitor/core';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
 import type { LevelRow, ProjectSettings } from '../types/level';
 
 /**
@@ -329,17 +332,54 @@ export function getExcelFileName(settings: ProjectSettings): string {
 }
 
 /**
- * 표준 엑셀 파일 다운로드
+ * Blob 데이터를 Base64 문자열로 변환 (Capacitor Filesystem 저장용)
+ */
+export function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const dataUrl = reader.result as string;
+      const base64 = dataUrl.split(',')[1] || dataUrl;
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+/**
+ * 표준 엑셀 파일 다운로드 / 네이티브 파일 저장
  */
 export async function exportToStandardExcel(
   rows: LevelRow[],
   settings: ProjectSettings
 ): Promise<void> {
   const blob = await generateExcelBlob(rows, settings);
+  const fileName = getExcelFileName(settings);
+
+  // 1. Android / iOS 네이티브 앱(APK) 환경
+  if (Capacitor.isNativePlatform()) {
+    const base64Data = await blobToBase64(blob);
+    const saved = await Filesystem.writeFile({
+      path: fileName,
+      data: base64Data,
+      directory: Directory.Cache,
+    });
+
+    // 네이티브 공유 시트를 열어 사용자가 파일 저장/카카오톡 전송/엑셀 앱 열기를 바로 선택 가능하도록 지원
+    await Share.share({
+      title: fileName,
+      url: saved.uri,
+      dialogTitle: '수준야장 엑셀 파일 저장 및 열기',
+    });
+    return;
+  }
+
+  // 2. 일반 웹 브라우저 환경 (PC / 모바일 웹)
   const url = window.URL.createObjectURL(blob);
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = getExcelFileName(settings);
+  anchor.download = fileName;
   document.body.appendChild(anchor);
   anchor.click();
   document.body.removeChild(anchor);
@@ -369,8 +409,36 @@ export async function shareExcelFile(
   prebuiltFile?: File | null
 ): Promise<{ success: boolean; method: 'web-share' | 'download' | 'error'; message: string }> {
   try {
-    const file = prebuiltFile || (await createExcelFile(rows, settings));
-    const fileName = file.name;
+    const blob = await generateExcelBlob(rows, settings);
+    const fileName = getExcelFileName(settings);
+
+    // 1. 안드로이드 / iOS 네이티브 앱(APK) 환경: 네이티브 Share 시트 호출 (카카오톡 최우선)
+    if (Capacitor.isNativePlatform()) {
+      const base64Data = await blobToBase64(blob);
+      const saved = await Filesystem.writeFile({
+        path: fileName,
+        data: base64Data,
+        directory: Directory.Cache,
+      });
+
+      await Share.share({
+        title: `[CivilBook] ${settings.projectName} 수준야장`,
+        text: `[CivilBook 수준측량 야장 보고서]\n공사명: ${settings.projectName}\n측량일자: ${settings.surveyDate}\n기준 BM: ${settings.bmElevation !== null ? settings.bmElevation + 'm' : '미설정'} / 기계고: ${settings.currentIH !== null ? settings.currentIH + 'm' : '-'}\n\n첨부: 표준 8개 컬럼 엑셀 야장`,
+        url: saved.uri,
+        dialogTitle: '카카오톡 대화방으로 수준야장 전송',
+      });
+
+      return {
+        success: true,
+        method: 'web-share',
+        message: '카카오톡 대화방 선택창이 열렸습니다.',
+      };
+    }
+
+    // 2. 일반 웹 브라우저 환경
+    const file = prebuiltFile || new File([blob], fileName, {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
 
     // 다운로드 헬퍼
     const doDownload = () => {
@@ -384,7 +452,6 @@ export async function shareExcelFile(
       window.URL.revokeObjectURL(url);
     };
 
-    // 1. Web Share API (모바일, 태블릿, PWA, 웹뷰 앱, Windows 크롬 등 모든 환경에서 카톡 대화방 선택창 직행)
     if (typeof navigator !== 'undefined' && 'share' in navigator) {
       const shareDataWithFile = {
         files: [file],
@@ -408,7 +475,6 @@ export async function shareExcelFile(
       };
 
       if (navigator.canShare && navigator.canShare(shareDataTextOnly)) {
-        // 파일은 자동 다운로드 시켜놓고, 카톡 대화방 선택창으로 텍스트 전달
         doDownload();
         await navigator.share(shareDataTextOnly);
         return {
@@ -419,7 +485,7 @@ export async function shareExcelFile(
       }
     }
 
-    // 2. Web Share 미지원 환경: 파일 다운로드
+    // 3. Web Share 미지원 환경: 파일 다운로드
     doDownload();
     return {
       success: true,
@@ -427,11 +493,16 @@ export async function shareExcelFile(
       message: '엑셀 파일이 준비되었습니다.',
     };
   } catch (error: any) {
-    if (error.name === 'AbortError') {
+    if (
+      error.name === 'AbortError' ||
+      error.message?.includes('canceled') ||
+      error.message?.includes('cancelled') ||
+      error.message?.includes('Share canceled')
+    ) {
       return { success: false, method: 'error', message: '공유가 취소되었습니다.' };
     }
     console.error('공유 처리 중 오류:', error);
-    return { success: false, method: 'error', message: '카카오톡 공유를 실행할 수 없습니다.' };
+    return { success: false, method: 'error', message: '공유를 실행할 수 없습니다.' };
   }
 }
 
