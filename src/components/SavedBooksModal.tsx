@@ -137,7 +137,7 @@ export const SavedBooksModal: React.FC<SavedBooksModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className={`w-full max-w-lg rounded-3xl p-5 sm:p-6 shadow-2xl border flex flex-col max-h-[90vh] overflow-hidden ${
+        className={`w-full max-w-lg rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-2xl border flex flex-col max-h-[90vh] overflow-hidden ${
           isHighContrast
             ? 'bg-[#121722] border-[#2A3447] text-white'
             : 'bg-white border-[#E8ECF2] text-gray-900'
@@ -145,56 +145,56 @@ export const SavedBooksModal: React.FC<SavedBooksModalProps> = ({
       >
         {/* 1. 상단 타이틀 바 */}
         <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800 shrink-0">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-[#0064FF]/10 text-[#0064FF] flex items-center justify-center font-bold">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#0064FF]/10 text-[#0064FF] flex items-center justify-center font-bold shrink-0">
               <FolderOpen className="w-5 h-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h3 className="font-extrabold text-base sm:text-lg tracking-tight flex items-center gap-1.5">
                 <span>야장 보관함</span>
-                <span className="text-xs px-2 py-0.5 rounded-full font-mono font-bold bg-[#EBF3FF] text-[#0064FF] dark:bg-blue-950 dark:text-blue-300">
+                <span className="text-[11px] sm:text-xs px-2 py-0.5 rounded-full font-mono font-bold bg-[#EBF3FF] text-[#0064FF] dark:bg-blue-950 dark:text-blue-300 shrink-0">
                   {savedBooks.length}개
                 </span>
               </h3>
-              <p className="text-xs text-gray-400">현장별 야장을 저장하고 언제든지 다시 불러옵니다</p>
+              <p className="text-[11px] sm:text-xs text-gray-400 break-keep truncate">현장별 야장을 저장하고 언제든지 다시 불러옵니다</p>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="p-1.5 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors shrink-0 ml-1"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* 2. 본문 스크롤 영역 */}
-        <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-4 pr-1">
+        <div className="flex-1 overflow-y-auto py-3 sm:py-4 flex flex-col gap-3 sm:gap-4 pr-0.5">
           {/* (1) 현재 야장 저장하기 카드 */}
           <div
-            className={`p-4 rounded-2xl border transition-all ${
+            className={`p-3.5 sm:p-4 rounded-2xl border transition-all ${
               isHighContrast
                 ? 'bg-[#182030] border-[#2D3952]'
                 : 'bg-[#F8FAFC] border-[#E2E8F0]'
             }`}
           >
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-bold text-gray-600 dark:text-gray-300 flex items-center gap-1.5">
-                <Save className="w-3.5 h-3.5 text-[#0064FF]" />
-                현재 작업 중인 야장 저장
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2.5">
+              <span className="text-xs font-bold text-gray-700 dark:text-gray-200 flex items-center gap-1.5 shrink-0">
+                <Save className="w-3.5 h-3.5 text-[#0064FF] shrink-0" />
+                <span>현재 작업 중인 야장 저장</span>
               </span>
-              <span className="text-[11px] text-gray-400 font-mono">
+              <span className="text-[11px] text-gray-400 font-mono shrink-0">
                 측점 {currentRows.length}개 • BM {formatM(currentSettings.bmElevation)}m
               </span>
             </div>
 
-            <form onSubmit={handleSaveCurrent} className="flex gap-2">
+            <form onSubmit={handleSaveCurrent} className="flex items-center gap-1.5 sm:gap-2">
               <input
                 type="text"
                 value={saveName}
                 onChange={(e) => setSaveName(e.target.value)}
-                placeholder="야장 이름 입력 (예: 1구간 옹벽 기초)"
-                className={`flex-1 py-2 px-3 rounded-xl border text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#0064FF] transition-all ${
+                placeholder="야장 이름 입력 (예: 1구간 옹벽)"
+                className={`flex-1 min-w-0 py-2 sm:py-2.5 px-3 rounded-xl border text-xs sm:text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#0064FF] transition-all ${
                   isHighContrast
                     ? 'bg-[#121722] border-[#2A3447] text-white placeholder-gray-500'
                     : 'bg-white border-gray-300 text-gray-800 placeholder-gray-400'
@@ -202,10 +202,10 @@ export const SavedBooksModal: React.FC<SavedBooksModalProps> = ({
               />
               <button
                 type="submit"
-                className="px-3.5 py-2 rounded-xl bg-[#0064FF] hover:bg-blue-600 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 shrink-0 shadow-sm active:scale-95 transition-all"
+                className="px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-[#0064FF] hover:bg-blue-600 active:scale-95 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap shadow-sm shadow-blue-200 transition-all"
               >
-                <Save className="w-3.5 h-3.5" />
-                <span>보관함에 저장</span>
+                <Save className="w-4 h-4 shrink-0" />
+                <span><span className="hidden xs:inline">보관함 </span>저장</span>
               </button>
             </form>
           </div>
@@ -328,33 +328,33 @@ export const SavedBooksModal: React.FC<SavedBooksModalProps> = ({
         </div>
 
         {/* 3. 하단 백업 및 복원 툴바 */}
-        <div className="pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between gap-2 shrink-0">
-          <div className="flex items-center gap-2">
+        <div className="pt-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
             <button
               type="button"
               onClick={exportBackupFile}
               title="스마트폰이나 다른 기기로 옮길 수 있도록 JSON 백업 파일을 저장합니다"
-              className={`px-2.5 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1 transition-all ${
+              className={`px-2 sm:px-2.5 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1 transition-all whitespace-nowrap shrink-0 ${
                 isHighContrast
                   ? 'bg-[#182030] border-[#2A3447] text-slate-300 hover:bg-[#1E2536]'
                   : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
               }`}
             >
-              <Download className="w-3.5 h-3.5" />
-              <span>전체 백업 다운로드</span>
+              <Download className="w-3.5 h-3.5 shrink-0" />
+              <span><span className="hidden sm:inline">전체 </span>백업 저장</span>
             </button>
 
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               title="저장해둔 백업 파일(.json)을 불러와 복원합니다"
-              className={`px-2.5 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1 transition-all ${
+              className={`px-2 sm:px-2.5 py-1.5 rounded-xl border text-[11px] font-bold flex items-center gap-1 transition-all whitespace-nowrap shrink-0 ${
                 isHighContrast
                   ? 'bg-[#182030] border-[#2A3447] text-slate-300 hover:bg-[#1E2536]'
                   : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100'
               }`}
             >
-              <Upload className="w-3.5 h-3.5" />
+              <Upload className="w-3.5 h-3.5 shrink-0" />
               <span>백업 복원</span>
             </button>
             <input
@@ -369,7 +369,7 @@ export const SavedBooksModal: React.FC<SavedBooksModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 transition-colors"
+            className="px-3 sm:px-4 py-1.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-bold text-xs hover:bg-gray-200 transition-colors shrink-0"
           >
             닫기
           </button>
