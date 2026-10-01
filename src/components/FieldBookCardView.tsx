@@ -81,21 +81,21 @@ export const FieldBookCardView: React.FC<FieldBookCardViewProps> = ({
     <div className="w-full flex flex-col gap-3">
       {/* 1. 상단 컨트롤 바 */}
       <div
-        className={`px-4 py-2.5 rounded-2xl border flex items-center justify-between shadow-xs ${
+        className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-2xl border flex items-center justify-between shadow-xs ${
           isHighContrast
             ? 'bg-zinc-900 border-zinc-800 text-white'
             : 'bg-white border-[#E8ECF2]'
         }`}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
           <span
-            className={`text-xs font-bold flex items-center gap-1 ${
+            className={`text-xs font-bold flex items-center gap-1 whitespace-nowrap shrink-0 ${
               isHighContrast ? 'text-white' : 'text-gray-800'
             }`}
           >
             측점 목록
             <span
-              className={`ml-1 px-1.5 py-0.2 rounded-full text-[11px] font-mono font-bold ${
+              className={`ml-0.5 sm:ml-1 px-1.5 py-0.2 rounded-full text-[11px] font-mono font-bold ${
                 isHighContrast
                   ? 'bg-cyan-900 text-cyan-200 border border-cyan-700'
                   : 'bg-[#EBF3FF] text-[#0064FF]'
@@ -105,7 +105,7 @@ export const FieldBookCardView: React.FC<FieldBookCardViewProps> = ({
             </span>
           </span>
           <span
-            className={`text-[11px] hidden sm:inline ${
+            className={`text-[10px] sm:text-[11px] hidden md:inline truncate ${
               isHighContrast ? 'text-gray-300' : 'text-gray-400'
             }`}
           >
@@ -113,29 +113,29 @@ export const FieldBookCardView: React.FC<FieldBookCardViewProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           {onOpenCalculator && (
             <button
               type="button"
               onClick={onOpenCalculator}
               title="현장 간이 계산기 열기"
-              className={`w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all active:scale-95 ${
+              className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all active:scale-95 ${
                 isHighContrast
                   ? 'bg-[#1E2536] text-[#38BDF8] border-[#2D374D] hover:bg-[#252E42]'
                   : 'bg-white text-[#0064FF] border-gray-200 hover:bg-blue-50 shadow-xs'
               }`}
             >
-              <Calculator className="w-4 h-4" />
+              <Calculator className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
           )}
 
           <button
             type="button"
             onClick={onAddRow}
-            className="flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-xl bg-[#0064FF] text-white hover:bg-blue-600 active:scale-95 transition-all shadow-sm shadow-blue-200"
+            className="flex items-center gap-1 text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl bg-[#0064FF] text-white hover:bg-blue-600 active:scale-95 transition-all shadow-sm shadow-blue-200 whitespace-nowrap shrink-0"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>행 추가</span>
+            <span><span className="hidden sm:inline">행 </span>추가</span>
           </button>
         </div>
       </div>

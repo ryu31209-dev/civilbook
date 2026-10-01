@@ -100,13 +100,13 @@ export const FieldBookTable: React.FC<FieldBookTableProps> = ({
     >
       {/* 1. 테이블 컨트롤 바 */}
       <div
-        className={`px-4 py-3 border-b flex items-center justify-between gap-2 ${
+        className={`px-3 sm:px-4 py-2 sm:py-3 border-b flex items-center justify-between gap-1.5 sm:gap-2 ${
           isHighContrast
             ? 'bg-[#161B26] border-[#242C3D] text-white'
             : 'bg-[#F8FAFC] border-gray-100 text-gray-700'
         }`}
       >
-        <div className="flex items-center gap-2 min-w-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
           <span
             className={`text-xs font-bold flex items-center gap-1 whitespace-nowrap shrink-0 ${
               isHighContrast ? 'text-white' : 'text-[#0F172A]'
@@ -114,7 +114,7 @@ export const FieldBookTable: React.FC<FieldBookTableProps> = ({
           >
             측점 목록
             <span
-              className={`ml-1 px-1.5 py-0.2 rounded-full text-[11px] font-mono font-bold ${
+              className={`ml-0.5 sm:ml-1 px-1.5 py-0.2 rounded-full text-[11px] font-mono font-bold ${
                 isHighContrast
                   ? 'bg-blue-950 text-[#38BDF8] border border-blue-800/60'
                   : 'bg-[#EBF3FF] text-[#0064FF]'
@@ -124,7 +124,7 @@ export const FieldBookTable: React.FC<FieldBookTableProps> = ({
             </span>
           </span>
           <span
-            className={`text-[11px] hidden sm:inline truncate ${
+            className={`text-[10px] sm:text-[11px] hidden md:inline truncate ${
               isHighContrast ? 'text-slate-300' : 'text-gray-400'
             }`}
           >
@@ -132,26 +132,26 @@ export const FieldBookTable: React.FC<FieldBookTableProps> = ({
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
           {/* 현장 간이 계산기 (깔끔한 단독 아이콘 버튼) */}
           <button
             type="button"
             onClick={onOpenCalculator}
             title="현장 간이 계산기 열기"
-            className={`w-8 h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all active:scale-95 ${
+            className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl border flex items-center justify-center shrink-0 transition-all active:scale-95 ${
               isHighContrast
                 ? 'bg-[#1E2536] text-[#38BDF8] border-[#2D374D] hover:bg-[#252E42]'
                 : 'bg-white text-[#0064FF] border-gray-200 hover:bg-blue-50 shadow-xs'
             }`}
           >
-            <Calculator className="w-4 h-4" />
+            <Calculator className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
 
           {/* 8열 / 6열 토글 버튼 */}
           <button
             type="button"
             onClick={onToggleFullColumns}
-            className={`flex items-center gap-1 text-xs font-bold px-2.5 py-1.5 rounded-xl border transition-all whitespace-nowrap shrink-0 ${
+            className={`flex items-center gap-1 text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-1.5 rounded-xl border transition-all whitespace-nowrap shrink-0 ${
               isHighContrast
                 ? showFullColumns
                   ? 'bg-indigo-950 text-indigo-200 border-indigo-500'
@@ -164,24 +164,24 @@ export const FieldBookTable: React.FC<FieldBookTableProps> = ({
             {showFullColumns ? (
               <>
                 <EyeOff className={`w-3.5 h-3.5 ${isHighContrast ? 'text-indigo-300' : 'text-[#4F46E5]'}`} />
-                <span>8열 보기 중</span>
+                <span>8열 보기</span>
               </>
             ) : (
               <>
                 <Eye className={`w-3.5 h-3.5 ${isHighContrast ? 'text-slate-300' : 'text-gray-500'}`} />
-                <span>표준 6열 보기</span>
+                <span><span className="hidden sm:inline">표준 </span>6열 보기</span>
               </>
             )}
           </button>
 
-          {/* 행 추가 버튼 (스크린샷의 선명한 블루 #0064FF) */}
+          {/* 행 추가 버튼 */}
           <button
             type="button"
             onClick={onAddRow}
-            className="flex items-center gap-1 text-xs font-bold px-3 py-1.5 rounded-xl bg-[#0064FF] text-white hover:bg-[#0052D9] active:scale-95 transition-all shadow-sm shadow-blue-200 whitespace-nowrap shrink-0"
+            className="flex items-center gap-1 text-[11px] sm:text-xs font-bold px-2 sm:px-3 py-1.5 rounded-xl bg-[#0064FF] text-white hover:bg-[#0052D9] active:scale-95 transition-all shadow-sm shadow-blue-200 whitespace-nowrap shrink-0"
           >
             <Plus className="w-3.5 h-3.5" />
-            <span>행 추가</span>
+            <span><span className="hidden sm:inline">행 </span>추가</span>
           </button>
         </div>
       </div>

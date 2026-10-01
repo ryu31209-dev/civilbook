@@ -640,7 +640,11 @@ export function App() {
       <Toast toasts={toasts} onDismiss={dismissToast} />
 
       {/* 모바일 화면 래퍼 (최대 너비 640px) */}
-      <div className="w-full max-w-lg min-h-screen flex flex-col px-3 sm:px-4 pb-48 pt-2 gap-3.5">
+      <div
+        className={`w-full max-w-lg min-h-screen flex flex-col px-2.5 sm:px-4 pt-1 sm:pt-2 gap-2.5 sm:gap-3.5 transition-[padding] duration-200 ${
+          isNumpadOpen ? 'pb-[320px] sm:pb-[350px]' : 'pb-20 sm:pb-24'
+        }`}
+      >
         {/* 1. 상단 헤더 (CivilBook 타이틀, 카드뷰/표보기 토글, 카카오톡 엑셀 공유, 엑셀 다운로드, 야외모드, 초기화) */}
         <Header
           settings={settings}
